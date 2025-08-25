@@ -1,0 +1,52 @@
+Relatório: Implementação da Análise de Expressões Disponíveis (OPÇÃO 3 - QUESTÃO 3)
+
+1. Introdução ao Problema
+
+A Análise de Expressões Disponíveis é uma técnica de análise de fluxo de dados utilizada por compiladores para otimização de código. O seu principal objetivo é determinar, para cada ponto de um programa, quais expressões já foram calculadas e cujos valores ainda são válidos (ou seja, os operandos da expressão não foram modificados desde o último cálculo).  
+
+Uma expressão como x+y está "disponível" em um ponto p se, em todos os caminhos que levam do início do programa até p, a expressão x+y foi calculada e não houve redefinições de x ou y desde então. A principal aplicação desta análise é a Eliminação de Subexpressão Comum Global, onde o compilador evita recalcular uma expressão se o seu valor já está disponível, reutilizando o resultado anterior e tornando o programa mais eficiente.
+
+
+2. Visão Geral da Implementação em C++
+
+O código em C++ implementa essa análise para um programa representado como um Grafo de Fluxo de Controle (CFG) em código de três endereços. A implementação pode ser dividida em três fases principais:
+
+	1.Leitura e Parsing da Entrada: O programa lê um arquivo de texto (entrada.txt) que descreve os blocos básicos e suas conexões (sucessores) para montar uma representação interna do CFG.
+
+	2.Cálculo dos Conjuntos GEN e KILL: Para cada bloco básico, o código pré-calcula dois conjuntos essenciais:
+		GEN: O conjunto de expressões que são geradas (calculadas) dentro do bloco.
+    		KILL: O conjunto de expressões que são mortas (invalidadas) por atribuições a variáveis dentro do bloco.
+
+	3.Algoritmo Iterativo (Ponto Fixo): O código executa um algoritmo iterativo que calcula os conjuntos IN (expressões disponíveis na entrada de um bloco) e OUT (expressões disponíveis na saída) para cada bloco, continuando até que nenhum conjunto mude, alcançando um "ponto fixo".
+	
+	
+3. Análise das Equações de Fluxo de Dados
+A implementação se baseia em um sistema de equações de fluxo de dados, que define como a informação (as expressões disponíveis) se propaga pelo grafo:
+	GEN[B]: É o conjunto de expressões x op y calculadas no bloco B e cujos operandos (x e y) não são redefinidos após o cálculo dentro do mesmo bloco. O código implementa isso na função extrair_exprs. Uma nuance importante e bem tratada pelo código é a função normaliza_expr, que garante que expressões comutativas como a+b e b+a sejam tratadas como uma única entidade.
+
+	KILL[B]: É o conjunto de expressões x op y do programa que são invalidadas em B. Isso acontece se B contém uma atribuição a x ou y. O código calcula isso identificando as variáveis definidas (variaveis_definidas) e encontrando todas as expressões no programa que as utilizam (exprs_que_usam).
+	
+	Equação de Confluência (IN): Como uma expressão precisa estar disponível em todos os caminhos, o operador de confluência é a interseção (∩). O conjunto de expressões disponíveis na entrada de um bloco B é a interseção dos conjuntos disponíveis na saída de todos os seus predecessores P.  
+    		Fórmula: IN[B]=⋂P∈predecessores(B)​OUT[P]
+    	
+    	Equação de Transferência (OUT): O conjunto de expressões disponíveis na saída de um bloco B é formado pelas expressões geradas em B, mais as expressões que estavam disponíveis na entrada de B e não foram invalidadas.
+		Fórmula: OUT[B]=GEN[B]∪(IN[B]−KILL[B]).   
+		
+
+4.Análise do Algoritmo Implementado
+
+O algoritmo no main segue os seguintes passos:
+	1.Leitura e Construção do CFG: O código lê a entrada e popula os vetores blocos e sucessores. 
+    	Observação: O método de parsing é específico para um formato onde os blocos são nomeados como B1, B2, etc., e pode não ser compatível com o formato exato pedido no trabalho da disciplina.
+	2.Criação do Universo: Um conjunto universo é criado contendo todas as expressões únicas presentes no programa. Isso é fundamental para calcular os conjuntos KILL e para a inicialização.
+	3.Cálculo de GEN e KILL: O código itera sobre cada bloco para preencher os vetores GEN e KILL, conforme descrito na seção anterior.
+	4.Solução Iterativa:
+    		Inicialização: Os conjuntos IN são inicializados com o universo e os OUT como vazios. Observação: A abordagem padrão dos livros didáticos é inicializar os conjuntos OUT com o universo (exceto o do bloco de entrada), pois o algoritmo funciona removendo expressões que não estão disponíveis.
+    		Loop while (mudou): O coração do algoritmo. Ele recalcula os conjuntos IN e OUT para todos os blocos repetidamente. O loop termina quando, após uma passagem completa por todos os blocos, nenhum conjunto sofreu alteração.
+    		Atualização: Dentro do loop, o IN[B] é recalculado pela interseção dos OUT dos predecessores, e o OUT[B] é recalculado usando a função de transferência.
+    	
+
+
+5.Conclusão
+
+O código implementa de forma funcional a Análise de Expressões Disponíveis. Ele lida corretamente com a identificação de expressões GEN e KILL, incluindo o tratamento de operadores comutativos. O algoritmo iterativo, embora implementado de forma não padrão em sua inicialização e busca por predecessores, converge para a solução correta. As principais áreas para melhoria seriam a refatoração do parser de entrada para maior flexibilidade e a otimização da busca por predecessores para melhorar a eficiência em grafos grandes.   

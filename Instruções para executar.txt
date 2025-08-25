@@ -1,0 +1,125 @@
+UNIVERSIDADE FEDERAL DO CEARÁ – CAMPUS QUIXADÁ
+CURSO DE ENGENHARIA DE COMPUTAÇÃO
+DISCIPLINA: COMPILADORES
+
+
+TRABALHO II – ANÁLISE DE FLUXO DE DADOS
+
+============================================================
+INSTRUÇÕES DE COMPILAÇÃO E EXECUÇÃO
+============================================================
+
+Este documento descreve o procedimento necessário para compilar e executar as soluções 
+implementadas para as três questões propostas no Trabalho II da disciplina de Compiladores. 
+As implementações foram organizadas em três diretórios distintos, conforme o algoritmo de 
+análise de fluxo de dados envolvido.
+
+------------------------------------------------------------
+QUESTÃO 1 – ANÁLISE DE LONGEVIDADE DE VARIÁVEIS
+Diretório: src/Analise de Longevidade
+------------------------------------------------------------
+
+=>Compilação:
+    make
+
+=>Execução:
+    ./analise_longevidade < entrada.txt
+
+=> Observações:
+    - O arquivo `Exemplos_testes.txt` fornece exemplos de testes para entrada e saída.
+
+------------------------------------------------------------
+QUESTÃO 2 – REACHING DEFINITIONS (DEFINIÇÕES ALCANÇANTES)
+Diretório: src/Reaching Definitions
+------------------------------------------------------------
+
+=>Compilação:
+    make
+
+=>Execução (modo automatizado com Makefile):
+    make test            → executa todos os testes da pasta tests/
+    cat tests/test3.out  → exibe a saída de um teste específico no terminal
+
+=>Execução (modo manual com entrada específica):
+    ./exe < tests/test1.in
+
+=>riando novos testes:
+Para criar um novo teste (por exemplo, `meuteste.in`), siga o formato exigido:
+
+- Linha 1:
+    N M
+    (sendo N o número de blocos básicos e M o número de instruções)
+    
+- Linhas 2 até M+1:
+    Código intermediário em três endereços
+    Exemplo: `a = b + c`
+
+- Linha M+2 até M+1+N:
+    Lista de sucessores de cada bloco (separadas por linha).
+    Use `0` para blocos sem sucessores.
+
+Exemplo de entrada (`teste4.in`):
+
+------------------------------------------------------------
+QUESTÃO 3 – AVAILABLE EXPRESSIONS (EXPRESSÕES DISPONÍVEIS)
+Diretório: src/Available Expressions
+------------------------------------------------------------
+
+=>Compilação:
+    make
+
+=>Execução:
+    ./available_expr < entrada.txt
+    ou apenas
+    ./available_expr
+
+=> Observações:
+    - O arquivo `outras entradas.txt` fornece exemplos de testes para entrada e saída.
+
+------------------------------------------------------------
+FORMATO DA SAÍDA
+
+Para todas as três implementações, a saída segue o seguinte formato padrão:
+
+    OUT[1] = { expressao1 expressao2 ... }
+    IN[1] = { expressao1 expressao2 ... }
+
+O conteúdo dos conjuntos `IN` e `OUT` reflete os dados propagados nos blocos
+básicos, de acordo com a análise de fluxo de dados aplicada.
+
+------------------------------------------------------------
+REFERÊNCIAS
+
+- LOUDEN, Kenneth C. *Compiladores: Princípios e Práticas*. 2ª ed.
+- Materiais didáticos fornecidos pela disciplina (slides em PDF):
+    - Análise de Fluxo de Dados
+    - Conceitos de Otimização
+    - Representação Intermediária
+    - Alocação de Registradores
+
+------------------------------------------------------------
+INFORMAÇÕES ADICIONAIS
+
+Para quaisquer dúvidas sobre a organização, uso dos Makefiles ou estrutura dos
+testes, consulte os arquivos `Makefile`, `entrada.txt`, e os relatórios
+individuais presentes na pasta `relatorios/`.
+
+O que é o Makefile?  
+Um `Makefile` é um arquivo de automação usado para compilar programas de forma eficiente 
+e padronizada. Ele descreve as regras de compilação e os comandos a serem executados, como:  
+
+- Compilar arquivos `.cpp`  
+- Gerar arquivos `.o` (objetos)  
+- Ligar os objetos em um executável final  
+- Automatizar testes ou rodar comandos com diferentes arquivos de entrada  
+
+Cada diretório do trabalho contém seu próprio `Makefile`, o que permite executar comandos como:  
+
+    make           → compila o projeto  
+    make run       → executa com entrada definida  
+    make test      → executa todos os testes da pasta tests/  
+    make clean     → remove arquivos gerados (.o, binários, .out)  
+
+Isso facilita a organização e padroniza a execução dos códigos, conforme esperado em projetos 
+de compiladores e engenharia de software em geral.  
+

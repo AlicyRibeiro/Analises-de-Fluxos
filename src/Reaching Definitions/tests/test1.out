@@ -1,0 +1,9 @@
+Bloco 0:
+  IN : { }
+  OUT: { (a,0,0) }
+Bloco 1:
+  IN : { }
+  OUT: { (d,1,0) }
+Bloco 2:
+  IN : { }
+  OUT: { (f,2,0) }

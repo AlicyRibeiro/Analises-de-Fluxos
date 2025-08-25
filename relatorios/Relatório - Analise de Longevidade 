@@ -1,0 +1,18 @@
+RELATÓRIO – ANÁLISE DE LONGEVIDADE (OPÇÃO 3 - QUESTÃO 1)
+
+1. DESCRIÇÃO DA QUESTÃO:
+A Questão 1 da Opção 3 solicita a implementação da Análise de Longevidade,um dos algoritmos de fluxo de dados clássico. A proposta é que para cada bloco básico de um grafo de fluxo de controle, calcular os conjuntos IN e OUT que indicam quais variáveis estão "vivas",ou seja, ainda são necessárias,em cada ponto do programa.
+
+2. EXPLICAÇÃO DO CÓDIGO:
+O código foi implementado em C++,Ele usa uma estrutura Bloco que armazena:
+
+    -instrucoes: código de três endereços
+
+    -prox_bloco: lista de sucessores
+
+    -def, use, in, out: conjuntos de variáveis
+
+A função 'contem' é usada para verificar se uma variável já está em um vetor, o código faz parsing básico das instruções (separando palavras por espaços),o loop principal de análise continua até os conjuntos IN e OUT estabilizarem (não mudam mais).A saída final imprime os conjuntos OUT e IN de cada bloco, com uma linha em branco separando cada bloco para melhor visualização.
+
+
+

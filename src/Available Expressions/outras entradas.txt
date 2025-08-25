@@ -1,0 +1,88 @@
+Teste 1 – Expressões comuns com redefinições
+
+B1:
+t1 = a + b
+t2 = c + d
+goto B2
+B2:
+t3 = a + b
+t4 = t1 + t2
+2
+0
+
+Gera: a+b, c+d, t1+t2
+Esperado: a+b e c+d gerados no B1, propagados até B2
+
+----------------------------------------------------------------------------------------
+
+Teste 2 – Expressões sobrescritas (testa KILL)
+
+B1:
+x = a + b
+a = x + 1
+goto B2
+B2:
+y = a + b
+0
+
+ a+b é gerado no B1, mas depois a é sobrescrita, então a+b deve ser KILLed antes de B2
+ 
+ ----------------------------------------------------------------------------------------
+ 
+ Teste 3 – Dois caminhos convergentes
+ 
+ B1:
+a = b + c
+goto B3
+B2:
+a = b + c
+goto B3
+B3:
+x = b + c
+0
+
+Ambos B1 e B2 produzem b+c, então em B3 a expressão b+c é disponível apenas se estiver nos dois caminhos.
+
+ ----------------------------------------------------------------------------------------
+ 
+ Teste 4 – Expressão com comutatividade
+ 
+ B1:
+a = x + y
+goto B2
+B2:
+b = y + x
+0
+
+Deve reconhecer x+y ≡ y+x por causa da normalização — valida a função normaliza_expr.
+
+ ----------------------------------------------------------------------------------------
+ 
+Teste 5 – Expressão morta (não propagada)
+
+B1:
+a = b + c
+goto B2
+B2:
+c = 0
+d = b + c
+0
+
+ c é redefinido no B2, portanto b+c da B1 deve ser invalidado antes de B2.
+ 
+ ----------------------------------------------------------------------------------------
+ 
+ Teste 6 – Três blocos com ramificação e interseção
+ 
+ B1:
+t1 = a + b
+goto B2
+B2:
+t2 = a + b
+goto B3
+B3:
+t3 = a + b
+0
+
+ a + b é gerado em todos os blocos, então é uma boa verificação de propagação em caminhos múltiplos.
+ 

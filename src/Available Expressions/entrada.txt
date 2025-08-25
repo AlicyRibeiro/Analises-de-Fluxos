@@ -1,0 +1,9 @@
+B1:
+t1 = a + b
+t2 = c + d
+goto B2
+B2:
+t3 = a + b
+t4 = t1 + t2
+2
+0
