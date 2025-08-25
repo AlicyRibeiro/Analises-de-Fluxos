@@ -120,7 +120,7 @@ Para todas as implementações, a saída exibe os conjuntos `IN` e `OUT` calcula
 * OUT[2] = { ... }
 * IN[2] = { ... }
 
-## 📚 Relatórios e Referências
+##  Relatórios e Referências
 
 ### Relatórios
 Explicações detalhadas sobre a implementação de cada algoritmo, as estruturas de dados utilizadas e as lógicas das equações de fluxo de dados podem ser encontradas na pasta `relatorios/`.
